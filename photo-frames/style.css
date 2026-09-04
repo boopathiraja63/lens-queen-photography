@@ -156,7 +156,9 @@ a{color:inherit}
 }
 .gallery-card span{
   position:absolute;left:18px;bottom:18px;
-  font-family:Cinzel,serif;font-size:18px
+  font-family:Cinzel,serif;font-size:18px;
+  color:#ffffff;
+  text-shadow:0 2px 8px rgba(0,0,0,.9)
 }
 .contact-section{
   display:flex;align-items:center;justify-content:space-between;gap:32px;
