@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>12×36 Wedding Album | Lens Queen Photography</title>
+<style>
+:root{--bg:#080808;--panel:#121212;--text:#fff;--muted:#b9b0a5;--gold:#c9a86a}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+header{position:sticky;top:0;z-index:20;background:rgba(8,8,8,.92);backdrop-filter:blur(12px);border-bottom:1px solid #222;padding:16px 5vw;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.16em}
+.logo{width:42px;height:42px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;color:var(--gold);font-family:Georgia,serif}
+.back{border:1px solid #3a342b;padding:10px 16px;border-radius:999px;color:#eee;text-decoration:none;font-size:13px}
+.hero{padding:62px 5vw 28px;text-align:center}
+.kicker{color:var(--gold);letter-spacing:.22em;font-size:12px;font-weight:700}
+h1{font-family:Georgia,serif;font-size:clamp(34px,6vw,72px);margin:10px 0 8px}
+.hero p{color:var(--muted);margin:0 auto;max-width:700px;line-height:1.7}
+.album{padding:20px 4vw 70px;display:grid;gap:24px;max-width:1800px;margin:auto}
+.page{margin:0;background:var(--panel);border:1px solid #222;border-radius:14px;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.25);cursor:zoom-in}
+.page img{display:block;width:100%;height:auto;aspect-ratio:3/1;object-fit:contain;background:#111}
+.page figcaption{padding:10px 14px;color:#9f968a;font-size:12px;text-align:right}
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:99;display:none;align-items:center;justify-content:center;padding:20px}
+.lightbox.open{display:flex}
+.lightbox img{max-width:96vw;max-height:92vh;object-fit:contain;box-shadow:0 0 0 1px #333}
+.close,.prev,.next{position:fixed;border:0;background:rgba(20,20,20,.75);color:#fff;width:46px;height:46px;border-radius:50%;font-size:28px;cursor:pointer}
+.close{right:20px;top:20px}.prev{left:20px;top:50%;transform:translateY(-50%)}.next{right:20px;top:50%;transform:translateY(-50%)}
+footer{text-align:center;color:#827a70;padding:0 20px 40px;font-size:12px}
+@media(max-width:700px){header{padding:12px 16px}.brand{font-size:12px}.hero{padding:40px 18px 20px}.album{padding:12px 10px 50px;gap:14px}.page{border-radius:8px}.prev,.next{width:38px;height:38px;font-size:22px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><div class="logo">LQ</div><div>LENS QUEEN<br><span style="font-size:10px;color:#c9a86a">PHOTOGRAPHY</span></div></div>
+  <a class="back" href="../">← Back to Photography</a>
+</header>
+
+<section class="hero">
+  <div class="kicker">PREMIUM WEDDING ALBUM</div>
+  <h1>12×36 Album</h1>
+  <p>Bhuvaneshwaran &amp; Suruthi — wedding album spreads. Click any spread to view it full screen.</p>
+</section>
+
+<main class="album">
+  <figure class="page"><img src="images/album-01.jpg" alt="12x36 wedding album spread 1" loading="lazy"><figcaption>Spread 01</figcaption></figure>
+  <figure class="page"><img src="images/album-02.jpg" alt="12x36 wedding album spread 2" loading="lazy"><figcaption>Spread 02</figcaption></figure>
+  <figure class="page"><img src="images/album-03.jpg" alt="12x36 wedding album spread 3" loading="lazy"><figcaption>Spread 03</figcaption></figure>
+  <figure class="page"><img src="images/album-04.jpg" alt="12x36 wedding album spread 4" loading="lazy"><figcaption>Spread 04</figcaption></figure>
+  <figure class="page"><img src="images/album-05.jpg" alt="12x36 wedding album spread 5" loading="lazy"><figcaption>Spread 05</figcaption></figure>
+  <figure class="page"><img src="images/album-06.jpg" alt="12x36 wedding album spread 6" loading="lazy"><figcaption>Spread 06</figcaption></figure>
+  <figure class="page"><img src="images/album-07.jpg" alt="12x36 wedding album spread 7" loading="lazy"><figcaption>Spread 07</figcaption></figure>
+  <figure class="page"><img src="images/album-08.jpg" alt="12x36 wedding album spread 8" loading="lazy"><figcaption>Spread 08</figcaption></figure>
+  <figure class="page"><img src="images/album-09.jpg" alt="12x36 wedding album spread 9" loading="lazy"><figcaption>Spread 09</figcaption></figure>
+  <figure class="page"><img src="images/album-10.jpg" alt="12x36 wedding album spread 10" loading="lazy"><figcaption>Spread 10</figcaption></figure>
+  <figure class="page"><img src="images/album-11.jpg" alt="12x36 wedding album spread 11" loading="lazy"><figcaption>Spread 11</figcaption></figure>
+  <figure class="page"><img src="images/album-12.jpg" alt="12x36 wedding album spread 12" loading="lazy"><figcaption>Spread 12</figcaption></figure>
+  <figure class="page"><img src="images/album-13.jpg" alt="12x36 wedding album spread 13" loading="lazy"><figcaption>Spread 13</figcaption></figure>
+  <figure class="page"><img src="images/album-14.jpg" alt="12x36 wedding album spread 14" loading="lazy"><figcaption>Spread 14</figcaption></figure>
+  <figure class="page"><img src="images/album-15.jpg" alt="12x36 wedding album spread 15" loading="lazy"><figcaption>Spread 15</figcaption></figure>
+  <figure class="page"><img src="images/album-16.jpg" alt="12x36 wedding album spread 16" loading="lazy"><figcaption>Spread 16</figcaption></figure>
+  <figure class="page"><img src="images/album-17.jpg" alt="12x36 wedding album spread 17" loading="lazy"><figcaption>Spread 17</figcaption></figure>
+  <figure class="page"><img src="images/album-18.jpg" alt="12x36 wedding album spread 18" loading="lazy"><figcaption>Spread 18</figcaption></figure>
+  <figure class="page"><img src="images/album-19.jpg" alt="12x36 wedding album spread 19" loading="lazy"><figcaption>Spread 19</figcaption></figure>
+  <figure class="page"><img src="images/album-20.jpg" alt="12x36 wedding album spread 20" loading="lazy"><figcaption>Spread 20</figcaption></figure>
+</main>
+
+<div class="lightbox" id="lightbox">
+  <button class="close" aria-label="Close">×</button>
+  <button class="prev" aria-label="Previous">‹</button>
+  <img id="lightboxImg" alt="Album spread">
+  <button class="next" aria-label="Next">›</button>
+</div>
+
+<footer>© Lens Queen Photography • 12×36 Wedding Album</footer>
+<script>
+const imgs=[...document.querySelectorAll('.page img')];
+const box=document.getElementById('lightbox');
+const big=document.getElementById('lightboxImg');
+let current=0;
+function show(i){current=(i+imgs.length)%imgs.length;big.src=imgs[current].src;box.classList.add('open');document.body.style.overflow='hidden'}
+function closeBox(){box.classList.remove('open');document.body.style.overflow=''}
+imgs.forEach((img,i)=>img.addEventListener('click',()=>show(i)));
+document.querySelector('.close').onclick=closeBox;
+document.querySelector('.prev').onclick=()=>show(current-1);
+document.querySelector('.next').onclick=()=>show(current+1);
+box.addEventListener('click',e=>{if(e.target===box)closeBox()});
+document.addEventListener('keydown',e=>{if(!box.classList.contains('open'))return;if(e.key==='Escape')closeBox();if(e.key==='ArrowLeft')show(current-1);if(e.key==='ArrowRight')show(current+1)});
+</script>
+</body>
+</html>
