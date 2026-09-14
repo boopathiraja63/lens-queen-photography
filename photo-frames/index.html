@@ -33,6 +33,85 @@
 #prices .price-card span{font-size:20px;font-weight:700}
 </style>
 
+
+<style>
+#order .order-size-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:12px;
+  margin-top:12px;
+}
+#order .order-size-btn{
+  border:1px solid rgba(212,175,55,.35);
+  background:#111;
+  color:#fff;
+  border-radius:12px;
+  padding:14px 12px;
+  cursor:pointer;
+  text-align:left;
+}
+#order .order-size-btn span{
+  display:block;
+  font-size:18px;
+  font-weight:700;
+  margin-bottom:4px;
+}
+#order .order-size-btn small{
+  opacity:.75;
+  font-size:14px;
+}
+#order .order-size-btn.selected{
+  border-color:#d4af37;
+  box-shadow:0 0 0 2px rgba(212,175,55,.18);
+}
+</style>
+
+
+<style>
+#lightbox .lightbox-content{
+  max-width:min(88vw,1000px);
+  max-height:90vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+}
+#lightbox .lightbox-content img{
+  max-width:100%;
+  max-height:78vh;
+  object-fit:contain;
+}
+#lightbox .lightbox-caption{
+  color:#fff;
+  font-size:18px;
+  font-weight:700;
+  text-align:center;
+  padding:8px 16px;
+}
+#lightbox .lightbox-nav{
+  position:fixed;
+  top:50%;
+  transform:translateY(-50%);
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.45);
+  background:rgba(0,0,0,.6);
+  color:#fff;
+  font-size:36px;
+  line-height:42px;
+  cursor:pointer;
+  z-index:10002;
+}
+#lightbox .lightbox-prev{left:18px}
+#lightbox .lightbox-next{right:18px}
+@media(max-width:600px){
+  #lightbox .lightbox-nav{width:42px;height:42px;font-size:30px}
+  #lightbox .lightbox-prev{left:8px}
+  #lightbox .lightbox-next{right:8px}
+}
+</style>
+
 </head>
 <body>
 
@@ -111,7 +190,12 @@
     </div>
     <div class="lightbox" id="lightbox" aria-hidden="true">
       <button class="lightbox-close" id="lightboxClose" aria-label="Close">×</button>
-      <img id="lightboxImage" alt="Gallery preview">
+      <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous photo">‹</button>
+      <div class="lightbox-content">
+        <img id="lightboxImage" alt="Gallery preview">
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+      </div>
+      <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next photo">›</button>
     </div>
 
   </section>
@@ -205,7 +289,18 @@
       <div class="form-column">
         <div class="step-label"><span>3</span> Choose Size</div>
 
-        <div class="size-grid" id="sizeGrid"></div>
+        <div class="order-size-grid" id="sizeGrid">
+          <button type="button" class="order-size-btn" data-size="6×4" data-price="300"><span>6×4</span><small>₹300</small></button>
+          <button type="button" class="order-size-btn" data-size="12×8" data-price="600"><span>12×8</span><small>₹600</small></button>
+          <button type="button" class="order-size-btn" data-size="10×15" data-price="900"><span>10×15</span><small>₹900</small></button>
+          <button type="button" class="order-size-btn" data-size="12×15" data-price="1200"><span>12×15</span><small>₹1,200</small></button>
+          <button type="button" class="order-size-btn" data-size="12×18" data-price="1600"><span>12×18</span><small>₹1,600</small></button>
+          <button type="button" class="order-size-btn" data-size="16×24" data-price="2200"><span>16×24</span><small>₹2,200</small></button>
+          <button type="button" class="order-size-btn" data-size="16×36" data-price="2700"><span>16×36</span><small>₹2,700</small></button>
+          <button type="button" class="order-size-btn" data-size="18×24" data-price="3200"><span>18×24</span><small>₹3,200</small></button>
+          <button type="button" class="order-size-btn" data-size="20×24" data-price="3600"><span>20×24</span><small>₹3,600</small></button>
+          <button type="button" class="order-size-btn" data-size="30×40" data-price="4500"><span>30×40</span><small>₹4,500</small></button>
+        </div>
 
         <div class="form-group">
           <label for="category">Frame Category</label>
@@ -315,6 +410,144 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   if (close) close.addEventListener("click", closeBox);
   if (box) box.addEventListener("click", function(e){ if(e.target === box) closeBox(); });
+});
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const sizeButtons = document.querySelectorAll("#order .order-size-btn");
+  const totalPrice = document.getElementById("totalPrice");
+  const priceBreakdown = document.getElementById("priceBreakdown");
+  const frameType = document.getElementById("frameType");
+  const photoUpload = document.getElementById("photoUpload");
+  const previewImage = document.getElementById("previewImage");
+  const previewPlaceholder = document.getElementById("previewPlaceholder");
+  const orderForm = document.getElementById("orderForm");
+
+  let selectedSize = "";
+  let basePrice = 0;
+
+  function updatePrice(){
+    const extra = frameType ? Number(frameType.selectedOptions[0].dataset.extra || 0) : 0;
+    const total = basePrice + extra;
+    if (totalPrice) totalPrice.textContent = total ? "₹" + total.toLocaleString("en-IN") : "Select Size";
+    if (priceBreakdown) {
+      const type = frameType ? frameType.value : "";
+      priceBreakdown.textContent = selectedSize ? (selectedSize + (type ? " · " + type : "")) : "Choose a photo size";
+    }
+  }
+
+  sizeButtons.forEach(function(btn){
+    btn.addEventListener("click", function(){
+      sizeButtons.forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      selectedSize = btn.dataset.size;
+      basePrice = Number(btn.dataset.price || 0);
+      updatePrice();
+    });
+  });
+
+  if (frameType) frameType.addEventListener("change", updatePrice);
+
+  if (photoUpload) {
+    photoUpload.addEventListener("change", function(){
+      const file = photoUpload.files && photoUpload.files[0];
+      if (!file || !previewImage) return;
+      const reader = new FileReader();
+      reader.onload = function(e){
+        previewImage.src = e.target.result;
+        previewImage.style.display = "block";
+        if (previewPlaceholder) previewPlaceholder.style.display = "none";
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  if (orderForm) {
+    orderForm.addEventListener("submit", function(e){
+      e.preventDefault();
+      if (!selectedSize) {
+        alert("Please select a photo size.");
+        return;
+      }
+      const name = document.getElementById("customerName")?.value.trim() || "";
+      const mobile = document.getElementById("mobile")?.value.trim() || "";
+      const address = document.getElementById("address")?.value.trim() || "";
+      const category = document.getElementById("category")?.value || "";
+      const type = frameType?.value || "";
+      const extra = frameType ? Number(frameType.selectedOptions[0].dataset.extra || 0) : 0;
+      const total = basePrice + extra;
+
+      const msg =
+`Lens Queen Photo Frame Order
+
+Name: ${name}
+Mobile: ${mobile}
+Address: ${address}
+Size: ${selectedSize}
+Category: ${category}
+Frame Type: ${type}
+Price: ₹${total.toLocaleString("en-IN")}`;
+
+      window.open("https://wa.me/916374727954?text=" + encodeURIComponent(msg), "_blank");
+    });
+  }
+
+  updatePrice();
+});
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const cards = Array.from(document.querySelectorAll(".gallery-card.real[data-full]"));
+  const box = document.getElementById("lightbox");
+  const image = document.getElementById("lightboxImage");
+  const caption = document.getElementById("lightboxCaption");
+  const prev = document.getElementById("lightboxPrev");
+  const next = document.getElementById("lightboxNext");
+  const close = document.getElementById("lightboxClose");
+  let current = 0;
+
+  function show(index){
+    if (!cards.length || !box || !image) return;
+    current = (index + cards.length) % cards.length;
+    const card = cards[current];
+    image.src = card.dataset.full;
+    const label = card.querySelector("span");
+    if (caption) caption.textContent = label ? label.textContent.trim() : "";
+    box.style.display = "flex";
+    box.classList.add("open");
+    box.setAttribute("aria-hidden","false");
+  }
+
+  function hide(){
+    if (!box) return;
+    box.style.display = "none";
+    box.classList.remove("open");
+    box.setAttribute("aria-hidden","true");
+  }
+
+  cards.forEach(function(card, index){
+    card.addEventListener("click", function(e){
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      show(index);
+    }, true);
+  });
+
+  if (prev) prev.addEventListener("click", function(e){e.stopPropagation(); show(current - 1);});
+  if (next) next.addEventListener("click", function(e){e.stopPropagation(); show(current + 1);});
+  if (close) close.addEventListener("click", function(e){e.stopPropagation(); hide();});
+  if (box) box.addEventListener("click", function(e){if(e.target === box) hide();});
+
+  document.addEventListener("keydown", function(e){
+    if (!box || box.getAttribute("aria-hidden") === "true") return;
+    if (e.key === "ArrowLeft") show(current - 1);
+    if (e.key === "ArrowRight") show(current + 1);
+    if (e.key === "Escape") hide();
+  });
 });
 </script>
 
