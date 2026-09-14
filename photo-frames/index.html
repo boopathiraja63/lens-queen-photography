@@ -68,48 +68,15 @@
 
 
 <style>
-#lightbox .lightbox-content{
-  max-width:min(88vw,1000px);
-  max-height:90vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:12px;
-}
-#lightbox .lightbox-content img{
-  max-width:100%;
-  max-height:78vh;
-  object-fit:contain;
-}
-#lightbox .lightbox-caption{
-  color:#fff;
-  font-size:18px;
-  font-weight:700;
-  text-align:center;
-  padding:8px 16px;
-}
-#lightbox .lightbox-nav{
-  position:fixed;
-  top:50%;
-  transform:translateY(-50%);
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  border:1px solid rgba(255,255,255,.45);
-  background:rgba(0,0,0,.6);
-  color:#fff;
-  font-size:36px;
-  line-height:42px;
-  cursor:pointer;
-  z-index:10002;
-}
-#lightbox .lightbox-prev{left:18px}
-#lightbox .lightbox-next{right:18px}
-@media(max-width:600px){
-  #lightbox .lightbox-nav{width:42px;height:42px;font-size:30px}
-  #lightbox .lightbox-prev{left:8px}
-  #lightbox .lightbox-next{right:8px}
-}
+.customer-works-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.94);z-index:20000;align-items:center;justify-content:center}
+.customer-works-modal.open{display:flex}
+.customer-works-content{max-width:min(90vw,1100px);max-height:92vh;display:flex;flex-direction:column;align-items:center;gap:10px}
+.customer-works-content img{max-width:100%;max-height:84vh;object-fit:contain}
+.customer-works-count{color:#fff;font-weight:700;font-size:16px}
+.customer-works-close{position:fixed;right:18px;top:14px;z-index:20002;border:0;background:rgba(0,0,0,.6);color:#fff;font-size:38px;cursor:pointer}
+.customer-works-nav{position:fixed;top:50%;transform:translateY(-50%);width:50px;height:50px;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:rgba(0,0,0,.6);color:#fff;font-size:36px;cursor:pointer;z-index:20002}
+.customer-works-prev{left:14px}.customer-works-next{right:14px}
+@media(max-width:600px){.customer-works-nav{width:42px;height:42px;font-size:30px}.customer-works-prev{left:6px}.customer-works-next{right:6px}}
 </style>
 
 </head>
@@ -147,7 +114,7 @@
       <div class="hero-buttons">
         <a href="#order" class="btn btn-gold">Order Now</a>
         <a href="#prices" class="btn btn-outline">View Prices</a>
-        <a href="#gallery" class="btn btn-outline">Our Work Frames</a>
+        <button type="button" class="btn btn-outline" id="customerWorksOpen">Our Work</button>
       </div>
 
       <div class="hero-points">
@@ -176,38 +143,21 @@
 
     
     <div class="gallery-grid">
-      <button class="gallery-card real" data-full="gallery/customer-work-01.jpg"><img src="gallery/customer-work-01.jpg" alt="Love Story Frame"><span>Love Story Frame</span></button>
-      <button class="gallery-card real" data-full="gallery/customer-work-02.jpg"><img src="gallery/customer-work-02.jpg" alt="Family Portrait"><span>Family Portrait</span></button>
-      <button class="gallery-card real" data-full="gallery/customer-work-03.jpg"><img src="gallery/customer-work-03.jpg" alt="Kids Frame"><span>Kids Frame</span></button>
-      <button class="gallery-card real" data-full="gallery/customer-work-04.jpg"><img src="gallery/customer-work-04.jpg" alt="Family Frame"><span>Family Frame</span></button>
-      <button class="gallery-card real" data-full="gallery/customer-work-05.jpg"><img src="gallery/customer-work-05.jpg" alt="Wedding Couple"><span>Wedding Couple</span></button>
-      <button class="gallery-card real" data-full="gallery/customer-work-06.jpg"><img src="gallery/customer-work-06.jpg" alt="Wedding Frame"><span>Wedding Frame</span></button>
-      <button class="gallery-card real" data-full="gallery/customer-work-07.jpg"><img src="gallery/customer-work-07.jpg" alt="Creative Portrait"><span>Creative Portrait</span></button>
-      <button class="gallery-card real" data-full="gallery/customer-work-08.jpg"><img src="gallery/customer-work-08.jpg" alt="Newborn Frame"><span>Newborn Frame</span></button>
-      <button class="gallery-card real" data-full="gallery/customer-work-09.jpg"><img src="gallery/customer-work-09.jpg" alt="Portrait Frame"><span>Portrait Frame</span></button>
-      <button class="gallery-card real" data-full="gallery/customer-work-10.jpg"><img src="gallery/customer-work-10.jpg" alt="Couple Frame"><span>Couple Frame</span></button>
-      <button class="gallery-card real" data-full="gallery/customer-work-11.jpg"><img src="gallery/customer-work-11.jpg" alt="Kids Memory Frame"><span>Kids Memory Frame</span></button>
-      <button class="gallery-card real" data-full="gallery/customer-work-12.jpg"><img src="gallery/customer-work-12.jpg" alt="Baby Frame"><span>Baby Frame</span></button>
-      <button class="gallery-card real" data-full="gallery/customer-work-13.jpg"><img src="gallery/customer-work-13.jpg" alt="Collage Frame"><span>Collage Frame</span></button>
-      <button class="gallery-card real" data-full="gallery/customer-work-14.jpg"><img src="gallery/customer-work-14.jpg" alt="Birthday Frame"><span>Birthday Frame</span></button>
-      <button class="gallery-card real" data-full="gallery/customer-work-15.jpg"><img src="gallery/customer-work-15.jpg" alt="Baby Collage"><span>Baby Collage</span></button>
-      <button class="gallery-card real" data-full="gallery/customer-work-16.jpg"><img src="gallery/customer-work-16.jpg" alt="Couple Collage"><span>Couple Collage</span></button>
-      <button class="gallery-card real" data-full="gallery/customer-work-17.jpg"><img src="gallery/customer-work-17.jpg" alt="Creative Collage"><span>Creative Collage</span></button>
-      <button class="gallery-card real" data-full="gallery/customer-work-18.jpg"><img src="gallery/customer-work-18.jpg" alt="Birthday Collage"><span>Birthday Collage</span></button>
-      <button class="gallery-card real" data-full="gallery/customer-work-19.jpg"><img src="gallery/customer-work-19.jpg" alt="Newborn Creative Frame"><span>Newborn Creative Frame</span></button>
-      <button class="gallery-card real" data-full="gallery/customer-work-20.jpg"><img src="gallery/customer-work-20.jpg" alt="Custom Photo Frame"><span>Custom Photo Frame</span></button>
-      <button class="gallery-card real" data-full="gallery/customer-work-21.jpg"><img src="gallery/customer-work-21.jpg" alt="Couple Portrait"><span>Couple Portrait</span></button>
-      <button class="gallery-card real" data-full="gallery/customer-work-22.jpg"><img src="gallery/customer-work-22.jpg" alt="Bridal Portrait"><span>Bridal Portrait</span></button>
-      <button class="gallery-card real" data-full="gallery/customer-work-23.jpg"><img src="gallery/customer-work-23.jpg" alt="Kids Collage Frame"><span>Kids Collage Frame</span></button>
+      <button class="gallery-card real" data-full="https://boopathiraja63.github.io/lens-queen-photography/photo-frames/gallery/gallery-01.jpg"><img src="https://boopathiraja63.github.io/lens-queen-photography/photo-frames/gallery/gallery-01.jpg" alt="Collage Frame"><span>Collage Frame</span></button>
+      <button class="gallery-card real" data-full="https://boopathiraja63.github.io/lens-queen-photography/photo-frames/gallery/gallery-02.jpg"><img src="https://boopathiraja63.github.io/lens-queen-photography/photo-frames/gallery/gallery-02.jpg" alt="Creative Portrait"><span>Creative Portrait</span></button>
+      <button class="gallery-card real" data-full="https://boopathiraja63.github.io/lens-queen-photography/photo-frames/gallery/gallery-03.jpg"><img src="https://boopathiraja63.github.io/lens-queen-photography/photo-frames/gallery/gallery-03.jpg" alt="Baby Shower"><span>Baby Shower</span></button>
+      <button class="gallery-card real" data-full="https://boopathiraja63.github.io/lens-queen-photography/photo-frames/gallery/gallery-04.jpg"><img src="https://boopathiraja63.github.io/lens-queen-photography/photo-frames/gallery/gallery-04.jpg" alt="Newborn Frame"><span>Newborn Frame</span></button>
+      <button class="gallery-card real" data-full="https://boopathiraja63.github.io/lens-queen-photography/photo-frames/gallery/gallery-05.jpg"><img src="https://boopathiraja63.github.io/lens-queen-photography/photo-frames/gallery/gallery-05.jpg" alt="Wedding Family"><span>Wedding Family</span></button>
+      <button class="gallery-card real" data-full="https://boopathiraja63.github.io/lens-queen-photography/photo-frames/gallery/gallery-06.jpg"><img src="https://boopathiraja63.github.io/lens-queen-photography/photo-frames/gallery/gallery-06.jpg" alt="Wedding Couple"><span>Wedding Couple</span></button>
+      <button class="gallery-card real" data-full="https://boopathiraja63.github.io/lens-queen-photography/photo-frames/gallery/gallery-07.jpg"><img src="https://boopathiraja63.github.io/lens-queen-photography/photo-frames/gallery/gallery-07.jpg" alt="Kids Creative"><span>Kids Creative</span></button>
+      <button class="gallery-card real" data-full="https://boopathiraja63.github.io/lens-queen-photography/photo-frames/gallery/gallery-08.jpg"><img src="https://boopathiraja63.github.io/lens-queen-photography/photo-frames/gallery/gallery-08.jpg" alt="Birthday Baby"><span>Birthday Baby</span></button>
+      <button class="gallery-card real" data-full="https://boopathiraja63.github.io/lens-queen-photography/photo-frames/gallery/gallery-09.jpg"><img src="https://boopathiraja63.github.io/lens-queen-photography/photo-frames/gallery/gallery-09.jpg" alt="Baby Collage"><span>Baby Collage</span></button>
+      <button class="gallery-card real" data-full="https://boopathiraja63.github.io/lens-queen-photography/photo-frames/gallery/gallery-10.jpg"><img src="https://boopathiraja63.github.io/lens-queen-photography/photo-frames/gallery/gallery-10.jpg" alt="Couple Collage"><span>Couple Collage</span></button>
+      <button class="gallery-card real" data-full="https://boopathiraja63.github.io/lens-queen-photography/photo-frames/gallery/gallery-11.jpg"><img src="https://boopathiraja63.github.io/lens-queen-photography/photo-frames/gallery/gallery-11.jpg" alt="Love Story Frame"><span>Love Story Frame</span></button>
     </div>
     <div class="lightbox" id="lightbox" aria-hidden="true">
       <button class="lightbox-close" id="lightboxClose" aria-label="Close">×</button>
-      <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous photo">‹</button>
-      <div class="lightbox-content">
-        <img id="lightboxImage" alt="Gallery preview">
-        <div class="lightbox-caption" id="lightboxCaption"></div>
-      </div>
-      <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next photo">›</button>
+      <img id="lightboxImage" alt="Gallery preview">
     </div>
 
   </section>
@@ -511,54 +461,48 @@ Price: ₹${total.toLocaleString("en-IN")}`;
 </script>
 
 
+<div class="customer-works-modal" id="customerWorksModal" aria-hidden="true">
+  <button class="customer-works-close" id="customerWorksClose" aria-label="Close">×</button>
+  <button class="customer-works-nav customer-works-prev" id="customerWorksPrev" aria-label="Previous">‹</button>
+  <div class="customer-works-content">
+    <img id="customerWorksImage" alt="Lens Queen customer frame work">
+    <div class="customer-works-count" id="customerWorksCount"></div>
+  </div>
+  <button class="customer-works-nav customer-works-next" id="customerWorksNext" aria-label="Next">›</button>
+</div>
+
+
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const cards = Array.from(document.querySelectorAll(".gallery-card.real[data-full]"));
-  const box = document.getElementById("lightbox");
-  const image = document.getElementById("lightboxImage");
-  const caption = document.getElementById("lightboxCaption");
-  const prev = document.getElementById("lightboxPrev");
-  const next = document.getElementById("lightboxNext");
-  const close = document.getElementById("lightboxClose");
+document.addEventListener("DOMContentLoaded", function(){
+  const total = 23;
+  const paths = Array.from({length: total}, (_,i) => "customer-works/customer-work-" + String(i+1).padStart(2,"0") + ".jpg");
+  const modal = document.getElementById("customerWorksModal");
+  const image = document.getElementById("customerWorksImage");
+  const count = document.getElementById("customerWorksCount");
   let current = 0;
 
-  function show(index){
-    if (!cards.length || !box || !image) return;
-    current = (index + cards.length) % cards.length;
-    const card = cards[current];
-    image.src = card.dataset.full;
-    const label = card.querySelector("span");
-    if (caption) caption.textContent = label ? label.textContent.trim() : "";
-    box.style.display = "flex";
-    box.classList.add("open");
-    box.setAttribute("aria-hidden","false");
+  function show(i){
+    current = (i + total) % total;
+    image.src = paths[current];
+    count.textContent = (current + 1) + " / " + total;
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden","false");
+  }
+  function closeWorks(){
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden","true");
   }
 
-  function hide(){
-    if (!box) return;
-    box.style.display = "none";
-    box.classList.remove("open");
-    box.setAttribute("aria-hidden","true");
-  }
-
-  cards.forEach(function(card, index){
-    card.addEventListener("click", function(e){
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      show(index);
-    }, true);
-  });
-
-  if (prev) prev.addEventListener("click", function(e){e.stopPropagation(); show(current - 1);});
-  if (next) next.addEventListener("click", function(e){e.stopPropagation(); show(current + 1);});
-  if (close) close.addEventListener("click", function(e){e.stopPropagation(); hide();});
-  if (box) box.addEventListener("click", function(e){if(e.target === box) hide();});
-
-  document.addEventListener("keydown", function(e){
-    if (!box || box.getAttribute("aria-hidden") === "true") return;
-    if (e.key === "ArrowLeft") show(current - 1);
-    if (e.key === "ArrowRight") show(current + 1);
-    if (e.key === "Escape") hide();
+  document.getElementById("customerWorksOpen")?.addEventListener("click", () => show(0));
+  document.getElementById("customerWorksPrev")?.addEventListener("click", e => {e.stopPropagation(); show(current-1);});
+  document.getElementById("customerWorksNext")?.addEventListener("click", e => {e.stopPropagation(); show(current+1);});
+  document.getElementById("customerWorksClose")?.addEventListener("click", closeWorks);
+  modal?.addEventListener("click", e => { if(e.target === modal) closeWorks(); });
+  document.addEventListener("keydown", e => {
+    if(!modal?.classList.contains("open")) return;
+    if(e.key === "ArrowLeft") show(current-1);
+    if(e.key === "ArrowRight") show(current+1);
+    if(e.key === "Escape") closeWorks();
   });
 });
 </script>
