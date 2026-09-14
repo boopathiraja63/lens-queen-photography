@@ -79,6 +79,107 @@
 @media(max-width:600px){.customer-works-nav{width:42px;height:42px;font-size:30px}.customer-works-prev{left:6px}.customer-works-next{right:6px}}
 </style>
 
+
+<style>
+#lightbox .lightbox-content{
+  max-width:min(88vw,1000px);
+  max-height:90vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+}
+#lightbox .lightbox-content img{
+  max-width:100%;
+  max-height:78vh;
+  object-fit:contain;
+}
+#lightbox .lightbox-caption{
+  color:#fff;
+  font-size:18px;
+  font-weight:700;
+  text-align:center;
+  padding:8px 16px;
+}
+#lightbox .lightbox-nav{
+  position:fixed;
+  top:50%;
+  transform:translateY(-50%);
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.45);
+  background:rgba(0,0,0,.6);
+  color:#fff;
+  font-size:36px;
+  cursor:pointer;
+  z-index:10002;
+}
+#lightbox .lightbox-prev{left:18px}
+#lightbox .lightbox-next{right:18px}
+@media(max-width:600px){
+  #lightbox .lightbox-nav{width:42px;height:42px;font-size:30px}
+  #lightbox .lightbox-prev{left:8px}
+  #lightbox .lightbox-next{right:8px}
+}
+</style>
+
+
+<style>
+.customer-works-grid-view{
+  width:min(94vw,1200px);
+  max-height:90vh;
+  overflow:auto;
+  padding:22px;
+}
+.customer-works-grid-view h2{
+  color:#fff;
+  text-align:center;
+  margin:0 0 20px;
+}
+.customer-works-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+.customer-work-thumb{
+  border:1px solid rgba(255,255,255,.18);
+  background:#111;
+  padding:0;
+  border-radius:12px;
+  overflow:hidden;
+  cursor:pointer;
+}
+.customer-work-thumb img{
+  width:100%;
+  aspect-ratio:4/3;
+  object-fit:cover;
+  display:block;
+}
+.customer-works-viewer{
+  width:100%;
+  height:100%;
+  align-items:center;
+  justify-content:center;
+}
+.customer-works-back{
+  position:fixed;
+  left:50%;
+  bottom:18px;
+  transform:translateX(-50%);
+  z-index:20003;
+  border:1px solid rgba(255,255,255,.4);
+  background:rgba(0,0,0,.7);
+  color:#fff;
+  padding:10px 16px;
+  border-radius:999px;
+  cursor:pointer;
+}
+@media(max-width:700px){
+  .customer-works-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+
 </head>
 <body>
 
@@ -157,7 +258,12 @@
     </div>
     <div class="lightbox" id="lightbox" aria-hidden="true">
       <button class="lightbox-close" id="lightboxClose" aria-label="Close">×</button>
-      <img id="lightboxImage" alt="Gallery preview">
+      <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous photo">‹</button>
+      <div class="lightbox-content">
+        <img id="lightboxImage" alt="Gallery preview">
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+      </div>
+      <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next photo">›</button>
     </div>
 
   </section>
@@ -352,32 +458,6 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-  const box = document.getElementById("lightbox");
-  const img = document.getElementById("lightboxImage");
-  const close = document.getElementById("lightboxClose");
-  document.querySelectorAll(".gallery-card[data-full]").forEach(function(card){
-    card.addEventListener("click", function(){
-      if (!box || !img) return;
-      img.src = card.getAttribute("data-full");
-      box.setAttribute("aria-hidden","false");
-      box.classList.add("open");
-      box.style.display = "flex";
-    });
-  });
-  function closeBox(){
-    if (!box) return;
-    box.setAttribute("aria-hidden","true");
-    box.classList.remove("open");
-    box.style.display = "none";
-  }
-  if (close) close.addEventListener("click", closeBox);
-  if (box) box.addEventListener("click", function(e){ if(e.target === box) closeBox(); });
-});
-</script>
-
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
   const sizeButtons = document.querySelectorAll("#order .order-size-btn");
   const totalPrice = document.getElementById("totalPrice");
   const priceBreakdown = document.getElementById("priceBreakdown");
@@ -461,47 +541,140 @@ Price: ₹${total.toLocaleString("en-IN")}`;
 </script>
 
 
+
 <div class="customer-works-modal" id="customerWorksModal" aria-hidden="true">
   <button class="customer-works-close" id="customerWorksClose" aria-label="Close">×</button>
-  <button class="customer-works-nav customer-works-prev" id="customerWorksPrev" aria-label="Previous">‹</button>
-  <div class="customer-works-content">
-    <img id="customerWorksImage" alt="Lens Queen customer frame work">
-    <div class="customer-works-count" id="customerWorksCount"></div>
+
+  <div class="customer-works-grid-view" id="customerWorksGridView">
+    <h2>Our Work Frames</h2>
+    <div class="customer-works-grid" id="customerWorksGrid"></div>
   </div>
-  <button class="customer-works-nav customer-works-next" id="customerWorksNext" aria-label="Next">›</button>
+
+  <div class="customer-works-viewer" id="customerWorksViewer" style="display:none;">
+    <button class="customer-works-nav customer-works-prev" id="customerWorksPrev" aria-label="Previous">‹</button>
+    <div class="customer-works-content">
+      <img id="customerWorksImage" alt="Lens Queen customer frame work">
+      <div class="customer-works-count" id="customerWorksCount"></div>
+    </div>
+    <button class="customer-works-nav customer-works-next" id="customerWorksNext" aria-label="Next">›</button>
+    <button class="customer-works-back" id="customerWorksBack" type="button">← Back to Frames</button>
+  </div>
 </div>
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const cards = Array.from(document.querySelectorAll(".gallery-card.real[data-full]"));
+  const box = document.getElementById("lightbox");
+  const image = document.getElementById("lightboxImage");
+  const caption = document.getElementById("lightboxCaption");
+  const prev = document.getElementById("lightboxPrev");
+  const next = document.getElementById("lightboxNext");
+  const close = document.getElementById("lightboxClose");
+  let current = 0;
+
+  function showGallery(index){
+    if (!cards.length || !box || !image) return;
+    current = (index + cards.length) % cards.length;
+    const card = cards[current];
+    image.src = card.dataset.full;
+    const label = card.querySelector("span");
+    if (caption) caption.textContent = label ? label.textContent.trim() : "";
+    box.style.display = "flex";
+    box.classList.add("open");
+    box.setAttribute("aria-hidden","false");
+  }
+  function hideGallery(){
+    if (!box) return;
+    box.style.display = "none";
+    box.classList.remove("open");
+    box.setAttribute("aria-hidden","true");
+  }
+
+  cards.forEach(function(card, index){
+    card.addEventListener("click", function(e){
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      showGallery(index);
+    }, true);
+  });
+
+  if (prev) prev.addEventListener("click", function(e){ e.stopPropagation(); showGallery(current - 1); });
+  if (next) next.addEventListener("click", function(e){ e.stopPropagation(); showGallery(current + 1); });
+  if (close) close.addEventListener("click", function(e){ e.stopPropagation(); hideGallery(); });
+  if (box) box.addEventListener("click", function(e){ if(e.target === box) hideGallery(); });
+
+  document.addEventListener("keydown", function(e){
+    if (!box || box.getAttribute("aria-hidden") === "true") return;
+    if (e.key === "ArrowLeft") showGallery(current - 1);
+    if (e.key === "ArrowRight") showGallery(current + 1);
+    if (e.key === "Escape") hideGallery();
+  });
+});
+</script>
 
 
 <script>
 document.addEventListener("DOMContentLoaded", function(){
   const total = 23;
   const paths = Array.from({length: total}, (_,i) => "customer-works/customer-work-" + String(i+1).padStart(2,"0") + ".jpg");
+
   const modal = document.getElementById("customerWorksModal");
+  const gridView = document.getElementById("customerWorksGridView");
+  const grid = document.getElementById("customerWorksGrid");
+  const viewer = document.getElementById("customerWorksViewer");
   const image = document.getElementById("customerWorksImage");
   const count = document.getElementById("customerWorksCount");
   let current = 0;
 
-  function show(i){
+  paths.forEach((src, i) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "customer-work-thumb";
+    btn.innerHTML = `<img src="${src}" alt="Customer frame ${i+1}">`;
+    btn.addEventListener("click", () => showViewer(i));
+    grid.appendChild(btn);
+  });
+
+  function openGrid(){
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden","false");
+    gridView.style.display = "block";
+    viewer.style.display = "none";
+  }
+
+  function showViewer(i){
     current = (i + total) % total;
     image.src = paths[current];
     count.textContent = (current + 1) + " / " + total;
-    modal.classList.add("open");
-    modal.setAttribute("aria-hidden","false");
+    gridView.style.display = "none";
+    viewer.style.display = "flex";
   }
+
   function closeWorks(){
     modal.classList.remove("open");
     modal.setAttribute("aria-hidden","true");
+    gridView.style.display = "block";
+    viewer.style.display = "none";
   }
 
-  document.getElementById("customerWorksOpen")?.addEventListener("click", () => show(0));
-  document.getElementById("customerWorksPrev")?.addEventListener("click", e => {e.stopPropagation(); show(current-1);});
-  document.getElementById("customerWorksNext")?.addEventListener("click", e => {e.stopPropagation(); show(current+1);});
+  document.getElementById("customerWorksOpen")?.addEventListener("click", openGrid);
+  document.getElementById("customerWorksPrev")?.addEventListener("click", e => {e.stopPropagation(); showViewer(current-1);});
+  document.getElementById("customerWorksNext")?.addEventListener("click", e => {e.stopPropagation(); showViewer(current+1);});
+  document.getElementById("customerWorksBack")?.addEventListener("click", e => {
+    e.stopPropagation();
+    gridView.style.display = "block";
+    viewer.style.display = "none";
+  });
   document.getElementById("customerWorksClose")?.addEventListener("click", closeWorks);
-  modal?.addEventListener("click", e => { if(e.target === modal) closeWorks(); });
+
   document.addEventListener("keydown", e => {
     if(!modal?.classList.contains("open")) return;
-    if(e.key === "ArrowLeft") show(current-1);
-    if(e.key === "ArrowRight") show(current+1);
+    if(viewer.style.display !== "none"){
+      if(e.key === "ArrowLeft") showViewer(current-1);
+      if(e.key === "ArrowRight") showViewer(current+1);
+    }
     if(e.key === "Escape") closeWorks();
   });
 });
